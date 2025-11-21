@@ -1,6 +1,11 @@
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 
+
+// modal is a anccestoer copmpoent heree that wrap childern componets
+// in my case it will ne NewChallenge component
+// all the variant  set in Modal compoent will be inherited by children componets
+// so in NewChallenge we dont need to set animate, initial, exit again
 export default function Modal({ title, children, onClose }) {
   
   return createPortal(

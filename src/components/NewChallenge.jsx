@@ -1,8 +1,8 @@
-import { useContext, useRef, useState } from 'react';
-
-import { ChallengesContext } from '../store/challenges-context.jsx';
-import Modal from './Modal.jsx';
-import images from '../assets/images.js';
+import { useContext, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { ChallengesContext } from "../store/challenges-context.jsx";
+import Modal from "./Modal.jsx";
+import images from "../assets/images.js";
 
 export default function NewChallenge({ onDone }) {
   const title = useRef();
@@ -58,13 +58,41 @@ export default function NewChallenge({ onDone }) {
 
         <ul id="new-challenge-images">
           {images.map((image) => (
-            <li
+            <motion.li
+              // just have to definr variants, no need to define animate, initial, exit again
+              variants={{
+                hidden: { opacity: 0, scale: 0.5 },
+                visible: { opacity: 1, scale: 1 },
+                transition: { type: "spring" }, // Add the transition here
+              }}
+              // add exist visible to prevent flicker when modal close
+              // it override the exit in Modal component,
+              // if we dont do this, when modal close, it will wait to all the items in li exit first
+              // then modal exit, causing flicker effect
+              // you muest not use varant name in this case because in
+              // Modal component we already set animate, initial, exit with varant names
+              // have to use value directly
+              // exit={ { opacity: 1, scale: 1 }}
+
+              // UPDATE: in the later version of motion, if we keep the exit annd
+              // transition: { type: 'spring' } to the whole motion.li
+              // after closing the modal  my backdrop would not go away.
+
+              // Setting the transition attribute in the motion.li element means that 
+              // that element will enter AND EXIT using those transition properties. 
+              // The added bounce that is created by the "spring" animation (which looks great on entry) is what is c
+              // ausing the delay on the backdrop's 
+              // disappearance. We can't see it happening, but Framer Motion is waiting 
+              // for the children elements to finish bouncing before removing the backdrop.
+
+              // So instead of adding transition: { type: 'spring' } to the whole motion.li attribute, simply add it to the visible variant (as shown in the code below). That means motion.li elements will only "spring" on entry. Then you can simply delete the exit={{ opacity: 1, scale: 1 }} which for some reason is breaking the backdrop.
+
               key={image.alt}
               onClick={() => handleSelectImage(image)}
-              className={selectedImage === image ? 'selected' : undefined}
+              className={selectedImage === image ? "selected" : undefined}
             >
               <img {...image} />
-            </li>
+            </motion.li>
           ))}
         </ul>
 
