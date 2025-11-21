@@ -1,8 +1,11 @@
 import { useContext, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useAnimate, stagger } from "motion/react";
 import { ChallengesContext } from "../store/challenges-context.jsx";
 import Modal from "./Modal.jsx";
 import images from "../assets/images.js";
+
+
+
 
 export default function NewChallenge({ onDone }) {
   const title = useRef();
@@ -11,6 +14,10 @@ export default function NewChallenge({ onDone }) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const { addChallenge } = useContext(ChallengesContext);
+  // useAnimate is a low-level animation hook that gives you full control over animations in your components.
+  // scope is a ref that you can attach to any element you want to animate
+  // animate is a function that you can use to trigger animations on the scoped element or its children
+  const [scope, animate] = useAnimate();
 
   function handleSelectImage(image) {
     setSelectedImage(image);
@@ -31,6 +38,13 @@ export default function NewChallenge({ onDone }) {
       !challenge.deadline.trim() ||
       !challenge.image
     ) {
+      // use css selector to select input and textarea inside the scope element
+      animate('input, textarea', {
+        x: [0, -10, 10, -10, 10, 0],
+      } ,
+      // this is equivalent to transition in framer motion
+     { type: 'keyframes', duration: 0.2, delay: stagger(0.05) })
+
       return;
     }
 
@@ -40,7 +54,7 @@ export default function NewChallenge({ onDone }) {
 
   return (
     <Modal title="New Challenge" onClose={onDone}>
-      <form id="new-challenge" onSubmit={handleSubmit}>
+      <form id="new-challenge" onSubmit={handleSubmit} ref={scope}>
         <p>
           <label htmlFor="title">Title</label>
           <input ref={title} type="text" name="title" id="title" />
