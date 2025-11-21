@@ -30,7 +30,8 @@ export default function Header() {
 
         // use whileHover instead for simplicity
         whileHover={{
-          scale: 1.1
+          scale: 1.1,
+          backgroundColor : "#4b5563",
         }}
         // transition will controll all the animation behavior applyon this element
         transition={{

@@ -56,13 +56,24 @@ export default function NewChallenge({ onDone }) {
           <input ref={deadline} type="date" name="deadline" id="deadline" />
         </p>
 
-        <ul id="new-challenge-images">
+        {/*  use stagger children to animate list items */}
+        <motion.ul
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+          id="new-challenge-images"
+        >
           {images.map((image) => (
             <motion.li
               // just have to definr variants, no need to define animate, initial, exit again
               variants={{
                 hidden: { opacity: 0, scale: 0.5 },
-                visible: { opacity: 1, scale: 1 },
+                // we can use array as value to define keyframes
+                visible: { opacity: 1, scale: [0.8,1.3,1] },
                 transition: { type: "spring" }, // Add the transition here
               }}
               // add exist visible to prevent flicker when modal close
@@ -78,11 +89,11 @@ export default function NewChallenge({ onDone }) {
               // transition: { type: 'spring' } to the whole motion.li
               // after closing the modal  my backdrop would not go away.
 
-              // Setting the transition attribute in the motion.li element means that 
-              // that element will enter AND EXIT using those transition properties. 
+              // Setting the transition attribute in the motion.li element means that
+              // that element will enter AND EXIT using those transition properties.
               // The added bounce that is created by the "spring" animation (which looks great on entry) is what is c
-              // ausing the delay on the backdrop's 
-              // disappearance. We can't see it happening, but Framer Motion is waiting 
+              // ausing the delay on the backdrop's
+              // disappearance. We can't see it happening, but Framer Motion is waiting
               // for the children elements to finish bouncing before removing the backdrop.
 
               // So instead of adding transition: { type: 'spring' } to the whole motion.li attribute, simply add it to the visible variant (as shown in the code below). That means motion.li elements will only "spring" on entry. Then you can simply delete the exit={{ opacity: 1, scale: 1 }} which for some reason is breaking the backdrop.
@@ -94,7 +105,7 @@ export default function NewChallenge({ onDone }) {
               <img {...image} />
             </motion.li>
           ))}
-        </ul>
+        </motion.ul>
 
         <p className="new-challenge-actions">
           <button type="button" onClick={onDone}>
