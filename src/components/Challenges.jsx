@@ -48,6 +48,9 @@ export default function Challenges() {
             <motion.ol className="challenge-items"
             // add a key to help framer motion to tell the component apart when the list changes 
             key="list"
+              initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{y: -30, opacity: 0}}
             >
               <AnimatePresence>
                 {displayedChallenges.map((challenge) => (

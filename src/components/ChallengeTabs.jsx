@@ -1,5 +1,5 @@
 import Badge from './Badge.jsx';
-
+import { motion } from 'motion/react';
 function Tab({ isSelected, onSelect, badgeCaption, children }) {
   return (
     <li>
@@ -8,9 +8,16 @@ function Tab({ isSelected, onSelect, badgeCaption, children }) {
         onClick={onSelect}
       >
         {children}
-        <Badge caption={badgeCaption}></Badge>
+        {/* key here will act as a unique identifier for the Badge component */}
+        {/*  when the value of the key changes, react will destroy the old component and render a new one
+          triggering the animation each time the badgeCaption changes
+        */}
+        <Badge key={badgeCaption} caption={badgeCaption}></Badge>
       </button>
-      {isSelected && <div className="active-tab-indicator" />}
+      {/*  add layout id for framer motion to enable shared layout animations */}
+      {/*  it will auto detach whenever the app is rendering a elem with the same layoutId in a diff of ur page 
+      anbd palce a smooth animation  */}
+      {isSelected && <motion.div  layoutId="tab-indicator" className="active-tab-indicator" />}
     </li>
   );
 }
