@@ -276,12 +276,20 @@ main {
   padding: 0;
 }
 
+
+/* 2 css rule for the .challenge-item-details-icon */
 .challenge-item-details-icon {
   display: inline-block;
   font-size: 0.85rem;
   margin-left: 0.25rem;
+  /* add transition here to rotate, */
+  /* add transition to the abse rule which is always active */
+  /* to tell the browser to animate the transform property */
+  transition: transform 0.3s ease;
 }
 
+/* already rotated set here */
+/* looks like trying to roatate */
 .challenge-item-details.expanded .challenge-item-details-icon {
   transform: rotate(180deg);
 }
