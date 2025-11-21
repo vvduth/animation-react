@@ -27,7 +27,11 @@ export default function ChallengeItem({
   }
 
   return (
-    <li>
+    // add layout prop to enable layout animations
+    
+    <motion.li layout exit={{
+      y: -30,opacity: 0
+    }}>
       <article className="challenge-item">
         <header>
           <img {...challenge.image} />
@@ -63,6 +67,6 @@ export default function ChallengeItem({
           )}
         </div>
       </article>
-    </li>
+    </motion.li>
   );
 }
